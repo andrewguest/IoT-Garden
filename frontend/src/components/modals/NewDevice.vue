@@ -13,90 +13,63 @@
       <section class="modal-card-body">
         <!-- Start of modal form -->
         <div class="field">
-          <label class="label">Name of new device</label>
+          <label class="label"
+            >Name of new device (20 characters or less)</label
+          >
           <div class="control has-icons-left">
-            <input class="input" type="text" placeholder="Device Name" />
+            <input
+              class="input has-text-centered"
+              type="text"
+              placeholder="Device Name"
+              maxlength="20"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-seedling"></i>
             </span>
           </div>
         </div>
 
-        <div class="field">
-          <label class="label">Username</label>
-          <div class="control has-icons-left">
-            <input
-              class="input"
-              type="text"
-              placeholder="Text input"
-              value="bulma"
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-          </div>
+        <!-- Adds a blank space between form elements (vertical space) -->
+        <div class="field is-horizontal">
+          <div class="field-label"></div>
         </div>
 
         <div class="field">
-          <label class="label">Email</label>
-          <div class="control has-icons-left">
-            <input
-              class="input"
-              type="email"
-              placeholder="Email input"
-              value="hello@"
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Subject</label>
+          <label class="label">Type of device</label>
           <div class="control">
             <div class="select">
-              <select>
-                <option>Select dropdown</option>
-                <option>With options</option>
+              <select v-model="deviceType">
+                <option
+                  v-for="device in listOfDevices"
+                  :key="device"
+                  :value="device"
+                >
+                  {{ device }}
+                </option>
               </select>
             </div>
           </div>
         </div>
 
-        <div class="field">
-          <label class="label">Message</label>
-          <div class="control">
-            <textarea class="textarea" placeholder="Textarea"></textarea>
-          </div>
+        <!-- Adds a blank space between form elements (vertical space) -->
+        <div class="field is-horizontal">
+          <div class="field-label"></div>
         </div>
 
         <div class="field">
+          <label class="label">Description of device</label>
           <div class="control">
-            <label class="checkbox">
-              <input type="checkbox" />
-              I agree to the <a href="#">terms and conditions</a>
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="question" />
-              Yes
-            </label>
-            <label class="radio">
-              <input type="radio" name="question" />
-              No
-            </label>
+            <textarea
+              class="textarea"
+              placeholder="What does this device do or where is it located?"
+            ></textarea>
           </div>
         </div>
         <!-- End of modal form -->
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" @click="saveNewDevice()">
-          Save changes
+          Add device
         </button>
         <button class="button" @click="$emit('close')">Cancel</button>
       </footer>
@@ -114,13 +87,31 @@ export default {
     showModal: Boolean,
   },
   setup() {
+    let listOfDevices = [
+      "Arduino",
+      "Raspberry Pi",
+      "esp8266",
+      "esp32",
+      "other",
+    ];
+
+    let deviceType = "";
+
+    function currentDeviceType(currentOptionSelection) {
+      return (this.deviceType = currentOptionSelection);
+    }
+
     // ! This function should perform some actual work instead of just loggin to the console
     function saveNewDevice() {
       console.log("Saved new device!");
+      console.log(this.deviceType);
     }
 
     return {
       saveNewDevice,
+      listOfDevices,
+      currentDeviceType,
+      deviceType,
     };
   },
 };
