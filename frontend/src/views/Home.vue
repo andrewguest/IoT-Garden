@@ -2,6 +2,20 @@
   <div>
     <section class="section">
       <div class="columns">
+        <div class="column is-offset-10">
+          <button
+            class="button is-primary"
+            @click="refreshAllData()"
+            id="refreshButton"
+          >
+            <span class="icon">
+              <i class="fas fa-sync-alt"></i>
+            </span>
+            <span>Refresh all data</span>
+          </button>
+        </div>
+      </div>
+      <div class="columns">
         <div class="column is-2" v-for="plant in fakeData" :key="plant.name">
           <div class="card">
             <div class="card-image">
@@ -49,8 +63,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: "Home",
   components: {},
@@ -70,8 +82,13 @@ export default {
       },
     ];
 
+    function refreshAllData() {
+      alert("Refreshing data");
+    }
+
     return {
       fakeData,
+      refreshAllData,
     };
   },
 };
@@ -79,4 +96,7 @@ export default {
 
 
 <style scoped>
+#refreshButton {
+  box-shadow: 2px 2px 1px lightgray;
+}
 </style>
