@@ -97,6 +97,6 @@ export default {
 
 <style scoped>
 #refreshButton {
-  box-shadow: 2px 2px 1px lightgray;
+  box-shadow: 4px 4px 3px lightgray;
 }
 </style>

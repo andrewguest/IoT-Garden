@@ -22,6 +22,7 @@
               type="text"
               placeholder="Device Name"
               maxlength="20"
+              v-model="newDeviceName"
             />
             <span class="icon is-small is-left">
               <i class="fas fa-seedling"></i>
@@ -62,6 +63,7 @@
             <textarea
               class="textarea"
               placeholder="What does this device do or where is it located?"
+              v-model="deviceDescription"
             ></textarea>
           </div>
         </div>
@@ -81,6 +83,9 @@
 </style>
 
 <script>
+import { ref } from "vue";
+import axios from "axios";
+
 export default {
   name: "AddDevice",
   props: {
@@ -95,16 +100,43 @@ export default {
       "other",
     ];
 
-    let deviceType = "";
+    let deviceType = ref("");
+    let newDeviceName = ref("");
+    let deviceDescription = ref("");
 
     function currentDeviceType(currentOptionSelection) {
       return (this.deviceType = currentOptionSelection);
     }
 
-    // ! This function should perform some actual work instead of just loggin to the console
-    function saveNewDevice() {
-      console.log("Saved new device!");
-      console.log(this.deviceType);
+    async function saveNewDevice() {
+      // Send a POST request with the new device data, from the modal, to the backend API
+      let res = await axios({
+        method: "post",
+        // ! This URL should be changed to the backend API when it's ready
+        url: "https://plants.free.beeceptor.com/my/api/path",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          deviceName: this.deviceName,
+          deviceType: this.deviceType,
+          deviceDescription: this.deviceDescription,
+        },
+      });
+
+      // If the response code from the backend API is 200 then show success message
+      if (res.status === 200) {
+        console.log("Success!");
+        // Log the body of the response data
+        console.log(res.data);
+      } else {
+        console.log("Failure");
+      }
+
+      // Blank out all of the modal data fields
+      this.newDeviceName = "";
+      this.deviceType = "";
+      this.deviceDescription = "";
     }
 
     return {
@@ -112,6 +144,8 @@ export default {
       listOfDevices,
       currentDeviceType,
       deviceType,
+      newDeviceName,
+      deviceDescription,
     };
   },
 };
