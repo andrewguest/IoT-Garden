@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: iot-garden-frontend:v0.1
+    ports:
+      # host:container
+      - "3030:80"
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+    image: iot-garden-backend:v0.1
+    command: gunicorn app.main:api --bind 0.0.0.0:5000 -k uvicorn.workers.UvicornWorker -w 1
+    ports:
+      - "5050:5000"
+    restart: always
+    depends_on:
+      - database
+
+  database:
+    image: mongo
+    volumes:
+      - ./mongodb_data:/data/db
+    restart: always
